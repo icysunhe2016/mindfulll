@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>mindFul</title>
+</head>
+<style>
+    body {
+        background-image: url("background.png");
+        background-repeat: no-repeat;
+        background-position: center -1200px;
+        background-size: 1300px;
+        
+    }
+    a {
+        color:darkgreen;
+        background-color: whitesmoke;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 5px 10px;
+        display: inline-block;
+    }
+</style>
+<body>
+
+    <!--Set up page-->
+    <form>
+        <label for="username">What's your name?</label>
+        <input type="text" id="username" name="username">
+        <br><br>
+        <label for="password">Create your password:</label>
+        <input type="password" id="password" name="password">
+
+    </form>
+
+    <br>
+
+    <button onClick="GFG_Fun()">Click here to set up meal times</button>
+    <p id="GFG_DOWN"></p>
+
+    <script>
+      var br = document.createElement("br");
+
+      function GFG_Fun() {
+        // Create the form
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "#");
+
+        // ---------- Meal 1 ----------
+        var m1Label = document.createElement("label");
+        m1Label.textContent = "Start time for Meal 1: ";
+        m1Label.setAttribute("for", "meal1");
+
+        var m1 = document.createElement("input");
+        m1.setAttribute("type", "time");
+        m1.setAttribute("name", "meal1");
+        m1.setAttribute("id", "meal1");
+
+        form.appendChild(m1Label);
+        form.appendChild(m1);
+        form.appendChild(br.cloneNode());
+
+        // ---------- Meal 2 ----------
+        var m2Label = document.createElement("label");
+        m2Label.textContent = "Start time for Meal 2: ";
+        m2Label.setAttribute("for", "meal2");
+
+        var m2 = document.createElement("input");
+        m2.setAttribute("type", "time");
+        m2.setAttribute("name", "meal2");
+        m2.setAttribute("id", "meal2");
+
+        form.appendChild(m2Label);
+        form.appendChild(m2);
+        form.appendChild(br.cloneNode());
+
+        // ---------- Meal 3 ----------
+        var m3Label = document.createElement("label");
+        m3Label.textContent = "Start time for Meal 3: ";
+        m3Label.setAttribute("for", "meal3");
+
+        var m3 = document.createElement("input");
+        m3.setAttribute("type", "time");
+        m3.setAttribute("name", "meal3");
+        m3.setAttribute("id", "meal3");
+
+        form.appendChild(m3Label);
+        form.appendChild(m3);
+        form.appendChild(br.cloneNode());
+
+    // submit
+        var submitBtn = document.createElement("input");
+        submitBtn.setAttribute("type", "submit");
+        submitBtn.setAttribute("value", "Save Meal Times");
+        form.appendChild(submitBtn);
+
+        document.getElementById("GFG_DOWN").appendChild(form);
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault(); // prevent page reload
+
+            // save meal times to storage
+            localStorage.setItem("meal1", m1.value);
+            localStorage.setItem("meal2", m2.value);
+            localStorage.setItem("meal3", m3.value);
+
+            alert("Meal times saved!");
+        });
+
+      }
+    </script>
+
+    <br>
+
+    <button onClick="GFG_Foop()">Click here to set up meal timers</button>
+    <p id="GFG_DOOP"></p>
+
+    <script>
+      var br = document.createElement("br");
+
+      function GFG_Foop() {
+        // making form
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "#");
+
+        // meal 1
+        var m1Label = document.createElement("label");
+        m1Label.textContent = "Meal 1 Duration: ";
+        m1Label.setAttribute("for", "meal1timer");
+
+        var m1T = document.createElement("input");
+        m1T.setAttribute("type", "quantity");
+        m1T.setAttribute("name", "meal1timer");
+        m1T.setAttribute("id", "meal1timer");
+
+        form.appendChild(m1Label);
+        form.appendChild(m1T);
+        form.appendChild(br.cloneNode());
+
+        // meal 2
+        var m2Label = document.createElement("label");
+        m2Label.textContent = "Meal 2 Duration: ";
+        m2Label.setAttribute("for", "meal2timer");
+
+        var m2T = document.createElement("input");
+        m2T.setAttribute("type", "quantity");
+        m2T.setAttribute("name", "meal2timer");
+        m2T.setAttribute("id", "meal2timer");
+
+        form.appendChild(m2Label);
+        form.appendChild(m2T);
+        form.appendChild(br.cloneNode());
+
+        // meal 3
+        var m3Label = document.createElement("label");
+        m3Label.textContent = "Meal 3 Duration: ";
+        m3Label.setAttribute("for", "meal3timer");
+
+        var m3T = document.createElement("input");
+        m3T.setAttribute("type", "quantity");
+        m3T.setAttribute("name", "meal3timer");
+        m3T.setAttribute("id", "meal3timer");
+
+        form.appendChild(m3Label);
+        form.appendChild(m3T);
+        form.appendChild(br.cloneNode());
+
+        // submit
+        var submitBtn = document.createElement("input");
+        submitBtn.setAttribute("type", "submit");
+        submitBtn.setAttribute("value", "Save Meal Times");
+        form.appendChild(submitBtn);
+
+        document.getElementById("GFG_DOOP").appendChild(form);
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault(); // prevent page reload
+
+            // save meal times to storage
+            localStorage.setItem("meal1Timer", m1T.value);
+            localStorage.setItem("meal2Timer", m2T.value);
+            localStorage.setItem("meal3Timer", m3T.value);
+
+            alert("Meal durations saved!");
+        });
+      }
+    </script>
+
+    <br>
+
+    <input type="submit" value="Submit your settings" id="submit">
+
+    <br>
+    <br>
+    <a href="index.html">Click me to return to home!</a>
+
+</body>
+<script>
+    document.getElementById("submit").onclick = function (e) {
+    localStorage.setItem("username", document.getElementById("username").value);
+    localStorage.setItem("password",document.getElementById("password").value)
+  } 
+
+</script>
+
+</html>

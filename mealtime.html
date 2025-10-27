@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>mindFul - EATING</title>
+    <script>
+        let userscore = Number(localStorage.getItem("score")) || 0;
+        let todayscore = Number(localStorage.getItem("todayscore")) || 0;
+        let usermealscore = 0;
+        console.log(userscore);
+        let numbites = 0;
+        let timepassed = 0;
+        let avgbpm = 0;
+        var bites = [];
+        bites.push(0.0);
+        var mealduration = 0;
+
+    </script>
+
+    <style>
+        body {
+            background-image: url("background.png");
+            background-repeat: no-repeat;
+            background-position: center -1200px;
+            background-size: 1300px;
+            
+        }
+        a {
+            color:darkgreen;
+            background-color: whitesmoke;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 5px 10px;
+            display: inline-block;
+        }
+        a.bottomleft {
+        position: absolute;
+        bottom: 8px;
+        left: 6px;
+        font-size: 16px;
+        border: 3px darkgreen;
+        }
+        a.bottomright {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            font-size: 16px;
+            border: 3px darkgreen;
+        }
+        a.bottomleftmid {
+            position: absolute;
+            bottom: 40px;
+            left: 6px;
+            font-size: 16px;
+            border: 3px darkgreen;
+        }
+        p.timerstyle {
+            color:darkgreen;
+            background-color: whitesmoke;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 5px 10px;
+            display: inline-block;
+        }
+        .vertical-center {
+            margin: 0;
+            position: absolute;
+            top: 90%;
+            left: 6px;
+
+        }
+        a.hideuntilnot {
+            display:none;
+        }
+
+    </style>
+</head>
+
+<body>
+    <img class="mindful" src="mindful.png" width="250" height="auto">
+    <br>
+
+        <p id="demo" class = "timerstyle"></p>
+
+        <script> // FOR TIMER
+            
+        var meal3Duration = localStorage.getItem("meal3Timer");
+        console.log("Meal 3 duration is " + meal3Duration);
+
+        // set the date counting down to
+        var now = new Date();
+        var countDownTime = now.getTime() + Math.floor(meal3Duration) * 60 * 1000; // time to end
+        console.log("The end time (ms) is " + countDownTime);
+
+        // find distance now and countdown
+        var x = setInterval(function() {
+        var now = new Date().getTime(); // current time 
+        var distance = countDownTime - now;
+
+        // calculate time in hours, mins, secs
+        var hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+        var minutes = Math.floor((distance / (1000 * 60)) % 60);
+        var seconds = Math.floor((distance / 1000) % 60);
+                
+        // output  result in element with id="demo"
+        document.getElementById("demo").innerHTML = "Timer: " + hours + "h " + minutes + "m " + seconds + "s ";
+                
+        // if the count down over, say timer end
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("demo").innerHTML = "Time Remaining: 0";
+        }
+        }, 1000);
+        </script>
+
+        <br>
+
+    <!--eating page-->
+    <button onclick="bitetime()">Click me when you take a bite!</button>
+
+    <script> // call every time user takes a bite
+        function bitetime() {
+            time = new Date(Date.now());
+            const timestartbite = time.getTime(); // current time for current bite, ms since 1970
+            numbites++; // increases the number of bites to be the numberth bite
+            bites.push(timestartbite); // enters current time for current bite into array, spot matches numbites
+            console.log(numbites);
+
+            timepassed = ((timestartbite) - bites[1])/60000; // time since first bite (start of meal) - in minutes
+            console.log("Time passed since start of meal: " + timepassed);
+
+            if(numbites >1) {
+                avgbpm = numbites/timepassed; // calculating & printing average bites per minute
+                console.log("Average bites per minute: " + Math.floor(avgbpm));
+                document.getElementById("bpm").innerHTML = "Average bites per minute: " + Math.floor(avgbpm);
+            }
+
+            if(numbites > 1) {
+                var timelastbite = (bites[numbites] - bites[numbites - 1])/1000;
+                if(timelastbite > 120) {
+                    timelastbite = timelastbite/60;
+                }
+                document.getElementById("timesincelast").innerHTML = "Time elapsed for previous bite: " + timelastbite + " seconds";
+            }
+
+            if(numbites >= 5) { // giving feedback to slow down if applicable
+                if(avgbpm >=5) {
+                    document.getElementById("feedback").innerHTML = "Try to slow down your eating: Here are some tips!"
+                    document.getElementById("tips").innerHTML = "<ul><li>Put your utensils down</li><li>Set aside the dishes until you are done eating your current bite</li><li>Take a sip of water</li><li>Self narrate your thoughts and movement</li>";
+                }
+            }
+
+            // adding points for PREVIOUS bite - subtract time NOW and time start PREVIOUS (timelastbite)
+            if(numbites > 1) {
+
+            console.log(userscore);
+            var prevtimeelapse = (bites[numbites] - bites[numbites - 1])/1000; // in seconds
+            console.log("current time is " + bites[numbites] + " and the time of the start of last bite is " + bites[numbites - 1]);
+            console.log("prevtimeelapsed is " + prevtimeelapse);
+            var pointstoadd = 0;
+            if(prevtimeelapse > 300) {
+                pointstoadd = pointstoadd + Math.floor((prevtimeelapse - 300)*0.1); // 0.1 pts/sec if bite elapse >5
+                prevtimeelapse = 300;
+            }
+            if(prevtimeelapse > 240) {
+                pointstoadd = pointstoadd + Math.floor((prevtimeelapse - 240)*0.1); // 0.5 pts/sec for bite elapse 4-5
+                prevtimeelapse = 240;
+            }
+            if(prevtimeelapse > 180) {
+                pointstoadd = pointstoadd + Math.floor((prevtimeelapse - 180)*1); // 1 pt/sec for bite elapse 3-4
+                prevtimeelapse = 180;
+            }
+            if(prevtimeelapse > 120) {
+                pointstoadd = pointstoadd + Math.floor((prevtimeelapse - 120)*2); // 2 pts/sec for bite elapse 2-3
+                prevtimeelapse = 120;
+            }
+            if(prevtimeelapse > 60) {
+                pointstoadd = pointstoadd + Math.floor((prevtimeelapse - 60)*1.5); // 1.5 pts/sec for bite elapse 1-2
+                prevtimeelapse = 60;
+            }
+            if(prevtimeelapse > 30) {
+                pointstoadd = pointstoadd + Math.floor((prevtimeelapse - 30)*1); // 1 pt/sec for bite elapse 0.5-1
+               prevtimeelapse = 30;
+            }
+            if(prevtimeelapse > 0) {
+                pointstoadd = pointstoadd + Math.floor((prevtimeelapse)*0.5); // 0.5 pts/sec for bite elapse up to 0.5
+            }
+            console.log("The user's total score is " + userscore);
+            console.log("The points added is " + pointstoadd);
+            usermealscore = usermealscore + pointstoadd;
+            userscore = userscore + pointstoadd;
+        
+            console.log(userscore);
+            console.log(usermealscore);
+            document.getElementById("cumulscore").innerHTML = "Your cumulative score is " + userscore;
+            document.getElementById("mealscore").innerHTML = "Points earned in this meal: " + usermealscore;
+            
+            localStorage.setItem("score",userscore);
+            localStorage.setItem("todayscore", usermealscore);
+        }
+    }
+    
+    </script>
+
+
+    <p>Make sure to chew through every bite!</p>
+    <p id="timesincelast">Time since last bite: </p>
+    <p id="bpm">Average bites per minute: </p>
+    <p id="feedback"></p>
+    <p id="tips"></p>
+    
+    <a id="cumulscore" class="bottomright">Your score: </a>
+    <a id="mealscore" class="bottomleft">Your score: </a>
+
+    <div class="vertical-center">
+        <button onclick="updatescores()" id="finishmeal">Click me to finish meal!</button>
+        <a href="scores.html" id="confirmend" class="hideuntilnot">Click to confirm end</a>
+    </div>
+
+    <script>
+        function updatescores() {
+            localStorage.setItem("score",userscore);
+
+            document.getElementById("confirmend").style.display = 'inline';
+            document.getElementById("finishmeal").style.display = "none";
+        }
+    </script>
+
+
+
+</body>
+
+<script>
+    const teme = new Date(Date.now());
+    const timestart = teme.getTime();
+    console.log(timestart);
+    document.getElementById("cumulscore").innerHTML = "Your cumulative score is " + userscore;
+    document.getElementById("mealscore").innerHTML = "Points earned in this meal: " + usermealscore;
+
+</script>
+
+</html>

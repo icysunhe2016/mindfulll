@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>mindFul - BYE BYE!</title>
+</head>
+<style>
+    body {
+        background-image: url("background.png");
+        background-repeat: no-repeat;
+        background-position: center -1200px;
+        background-size: 1300px;
+        
+    }
+
+</style>
+
+<body>
+    <!--End of meal page-->
+    <p>Want to do your end of meal checklist? y/n</p>
+    <h3>Your end of meal checklist:</h3>
+    <button>Take a sip of water</button>
+    <button>Walk for 5 minutes</button>
+    <button>Leave a brief reflection</button>
+
+    <textarea name="note" id="futurenote" cols="10" rows="3" placeholder="Start typing here">Leave a reflection or note for your future self!</textarea>
+    <a href="scores.html">Click me when done with checklist!</a>
+</body>
+
+<script>
+    let dates = [{date:"10-26-2025", score: 100}];
+
+    console.log(JSON.stringify(dates));
+    localStorage.setItem("dates", JSON.stringify(dates));
+    let fetched_dates = localStorage.getItem("dates");
+    dates = JSON.parse(fetched_dates);
+    console.log(dates[0].date);
+    console.log(dates[0].score);
+
+    // fetched the dates
+    dates.push({date:"10-27-2025", score: 500});
+
+    // update storage
+    localsStorage.setItem("dates", JSON.stringify(dates));
+    // storage updated: [ ]
+
+    dates.sort((a, b) => b.score - a.score);
+</script>
+
+</html>

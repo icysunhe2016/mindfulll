@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>mindFul</title>
+    <script>
+        // Global JavaScript variable
+        let score = Number(localStorage.getItem("score")) || 0;
+        var scorearray = [];
+        var scoredate = [];
+        
+        localStorage.setItem("array_score", scorearray);
+        localStorage.setItem("array_date", scoredate);
+        localStorage.setItem("userscore", score);
+        console.log("User's score: " + score);
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<style>
+    
+    .lexend-deca-yomana {
+      font-family: "Lexend Deca", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 10px;
+      font-style: normal;
+    }
+    body {
+        background-image: url("background.png");
+        background-repeat: no-repeat;
+        background-position: center -1200px;
+        background-size: 1300px;
+        
+    }
+    a {
+        color:darkgreen;
+        background-color: whitesmoke;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 5px 10px;
+        display: inline-block;
+    }
+    a.bottomleft {
+    position: absolute;
+    bottom: 8px;
+    left: 6px;
+    font-size: 16px;
+    border: 3px darkgreen;
+  }
+  a.bottomright {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    font-size: 16px;
+    border: 3px darkgreen;
+  }
+</style>
+
+<body>
+    <img class="mindful" src="mindful.png" width="300" height="auto">
+
+    <!--New user page-->
+    <p id="header" class="lexend-deca-yomana">An app for how you eat: earn points based on the pace of your eating and the start and end of your meals.</p>
+    <a href="setup.html" id="button">Click me to begin setup!</a>
+
+    <div id="joesmart">
+        <!--Returning user page-->
+        <h2 id="timmy" class="lexend-deca-yomana">**based on user's time: Good morning / afternoon / evening, <em>user's name!</em></h2>
+        <p><time datetime=""></time></p>
+        <p id="mealtimefeedback">It's meal time! / It's not time to eat yet!</p>
+
+        <a href="setup.html" class="bottomleft">Edit Settings</a>
+        <a id="currentscore" class="bottomright">Your score: </a>
+        <script>
+          document.getElementById("currentscore").innerHTML = "Your lifetime score is " + score;
+        </script>
+    </div>
+
+    <div id="startmeal">
+      <p>Your checklist: <em>Earn 5 points for every task you complete</em></p>
+      <div style="display: inline;">
+        <button id="task1" onclick="addtask_score(1)">Wash your hands</button>
+      </div>
+      <div style="display: inline;">
+        <button id="task2" onclick="addtask_score(2)">Take a sip of water</button>
+      </div>
+      <div style="display: inline;">
+        <button id="task3" onclick="addtask_score(3)">Thank someone (˶ᵔ ᵕ ᵔ˶)</button>
+      </div>
+      <br>
+
+        <script>
+          function addtask_score(tasknumber) {
+            console.log("This is from " + tasknumber);
+            score = score + 20;
+            localStorage.setItem("score", score);
+            console.log("The user's score is now " + score);
+            document.getElementById("currentscore").innerHTML = "Your current score is " + score;
+            if(tasknumber === 1) {
+              document.getElementById("task1").style.display = "none";
+            }
+            else if(tasknumber === 2) {
+              document.getElementById("task2").style.display = "none";
+            }
+            else if(tasknumber === 3) {
+              document.getElementById("task3").style.display = "none";
+            }
+          }
+        </script>
+
+    </div>
+      
+    <br>
+    <div style="display: inline;" id="canstartmeal">
+      <a href="mealtime.html">Click here to start your meal!</a>
+    </div>
+
+
+</body>
+
+<script>
+  // greeting user because I have manners
+  const time = new Date(Date.now());
+    console.log(time.getHours());
+    if(time.getHours() < 12) {
+        document.getElementById("timmy").innerHTML = "Good morning " + localStorage.getItem("username") + "!";
+    }
+    else if(time.getHours() < 18) {
+        document.getElementById("timmy").innerHTML = "Good afternoon " + localStorage.getItem("username") + "!";
+    }
+    else {
+        document.getElementById("timmy").innerHTML = "Good evening " + localStorage.getItem("username") + "!";
+    }
+
+  // is it meal time or not and can user start earning points
+  const mealTime1 = localStorage.getItem("meal1");
+  const mealTime2 = localStorage.getItem("meal2");
+  const mealTime3 = localStorage.getItem("meal3");
+  const meal1Duration = localStorage.getItem("meal1Timer");
+  const meal2Duration = localStorage.getItem("meal2Timer");
+  const meal3Duration = localStorage.getItem("meal3Timer");
+  console.log("Meal 3 duration is " + meal3Duration);
+
+  const mealTime1Time = mealTime1.split(":");
+  const mealTime1Hour = parseInt(mealTime1Time[0], 10); 
+  console.log(mealTime1Hour);
+
+  console.log("The time now is " + time.getHours());
+
+  const mealTime2Time = mealTime2.split(":");
+  const mealTime2Hour = parseInt(mealTime2Time[0], 10);
+
+  const mealTime3Time = mealTime3.split(":");
+  const mealTime3Hour = parseInt(mealTime3Time[0], 10); 
+
+
+  console.log("The time for meal 2 is " + mealTime2Hour);
+  console.log("The time for meal 2 is " + Math.floor(mealTime2));
+
+  // if(time >= mealTime1 && time.getHours() <= mealTime1 +1) {
+  if(time.getHours() >= mealTime1Hour && time.getHours() <= (mealTime1Hour + 1)) {
+    document.getElementById("mealtimefeedback").innerHTML = "It's time for breakfast. Let's earn some points!";
+    console.log("It is now breakfast");
+  }
+  else if(time.getHours() >= mealTime2Hour && time.getHours() <= mealTime2Hour +1) {
+    document.getElementById("mealtimefeedback").innerHTML = "It's time for lunch. Let's earn some points!";
+    console.log("It is now lunch");
+  }
+  else if(time.getHours() >= (mealTime3Hour) && time.getHours() <= (mealTime3Hour +1)) {
+    document.getElementById("mealtimefeedback").innerHTML = "It's time for dinner. Let's earn some points!";
+    console.log("It is now dinner");
+  }
+  else {
+    document.getElementById("mealtimefeedback").innerHTML = "It's not yet meal time, so you can't earn points now. See you later! („• ֊ •„)੭";
+    document.getElementById("startmeal").style.display = "none";
+    document.getElementById("canstartmeal").style.display = "none";
+  }
+
+
+  // new user or returning user welcome text
+  let clicked = localStorage.getItem("clicked");
+  if (clicked != null && clicked) {
+    document.getElementById("header").innerHTML = "<b>WELCOME BACK!<b> Ready to earn more points?";
+    document.getElementById("button").style.display = "none";
+  }
+  else {
+    document.getElementById("joesmart").style.display = "none";
+  }
+
+  //print into console
+  console.log(clicked);
+  document.getElementById("button").onclick = function (e) {
+    document.getElementById("header").innerHTML = "WELCOME TO mindFul! A points-based app for <em>how<em> you eat.";
+    localStorage.setItem("clicked", true);
+  }
+
+</script>
+
+</html>
